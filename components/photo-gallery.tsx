@@ -28,6 +28,7 @@ const GALLERY_IMAGES = [
   { src: "https://cdn.sa.net/2025/05/03/9bGmznyst24JBNE.webp", alt: "Astricia illustration 17" },
   { src: "https://cdn.sa.net/2025/05/03/V1rT8X7F5qhftSg.webp", alt: "Astricia illustration 18" },
   { src: "https://cdn.sa.net/2025/05/03/lNKTHeUwXr5gyBu.jpg", alt: "Astricia illustration 19" },
+  { src: "https://cdn.sa.net/2025/11/28/eJagyotKmruUX8n.png", alt: "Astricia illustration 20" },
 ]
 
 export function PhotoGallery() {
