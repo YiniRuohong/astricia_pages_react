@@ -12,7 +12,7 @@ export function ImageGallery() {
 
   const CASUAL_WITHOUT_CLOAK = "https://cdn.sa.net/2025/05/18/EGu6CRHASBrwoLl.png"
   const CASUAL_WITH_CLOAK = "https://cdn.sa.net/2025/05/18/y4EfhVPa6sqxtm9.png"
-  const WINTER_IMAGE = "https://cdn.sa.net/2024/10/23/Rt6CAwJgHL19hiu.png"
+  const WINTER_IMAGE = "https://cdn.sa.net/2026/01/03/bvU4FnoOJCfPieZ.png"
 
   const getCurrentImage = () => {
     if (activeTab === "casual") {
