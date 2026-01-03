@@ -1,57 +1,38 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useTranslation } from "@/lib/i18n/use-translation"
 import Image from "next/image"
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
 
+const CASUAL_WITHOUT_CLOAK = "https://cdn.sa.net/2025/05/18/EGu6CRHASBrwoLl.png"
+const CASUAL_WITH_CLOAK = "https://cdn.sa.net/2025/05/18/y4EfhVPa6sqxtm9.png"
+const WINTER_IMAGE = "https://cdn.sa.net/2026/01/03/bvU4FnoOJCfPieZ.png"
+
 export function ImageGallery() {
   const { t } = useTranslation()
-  const [activeTab, setActiveTab] = useState("casual")
+  const [activeTab, setActiveTab] = useState<"casual" | "winter">("casual")
   const [casualVariant, setCasualVariant] = useState<"with" | "without">("with")
-  const [currentImage, setCurrentImage] = useState("")
   const [isTransitioning, setIsTransitioning] = useState(false)
 
-  const CASUAL_WITHOUT_CLOAK = "https://cdn.sa.net/2025/05/18/EGu6CRHASBrwoLl.png"
-  const CASUAL_WITH_CLOAK = "https://cdn.sa.net/2025/05/18/y4EfhVPa6sqxtm9.png"
-  const WINTER_IMAGE = "https://cdn.sa.net/2026/01/03/bvU4FnoOJCfPieZ.png"
-
-  const getTargetImage = () => {
+  // 使用 useMemo 确保图片地址总是有效的
+  const currentImage = useMemo(() => {
     if (activeTab === "casual") {
       return casualVariant === "with" ? CASUAL_WITH_CLOAK : CASUAL_WITHOUT_CLOAK
     }
     return WINTER_IMAGE
-  }
-
-  // 初始化图片
-  useEffect(() => {
-    setCurrentImage(getTargetImage())
-  }, [])
+  }, [activeTab, casualVariant])
 
   // 图片切换动画
   useEffect(() => {
-    const targetImage = getTargetImage()
-
-    if (targetImage !== currentImage) {
-      setIsTransitioning(true)
-
-      // 淡出 -> 切换图片 -> 淡入
-      const timeout1 = setTimeout(() => {
-        setCurrentImage(targetImage)
-      }, 200) // 等待淡出完成
-
-      const timeout2 = setTimeout(() => {
-        setIsTransitioning(false)
-      }, 400) // 淡入完成
-
-      return () => {
-        clearTimeout(timeout1)
-        clearTimeout(timeout2)
-      }
-    }
+    setIsTransitioning(true)
+    const timeout = setTimeout(() => {
+      setIsTransitioning(false)
+    }, 200)
+    return () => clearTimeout(timeout)
   }, [activeTab, casualVariant])
 
-  const handleTabChange = (tab: string) => {
+  const handleTabChange = (tab: "casual" | "winter") => {
     if (tab !== activeTab) {
       setActiveTab(tab)
     }
