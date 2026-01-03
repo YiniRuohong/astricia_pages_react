@@ -1,65 +1,56 @@
 "use client"
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
-import { CharacterCard } from "@/components/character-card"
-const ImageGallery = dynamic(
-  () => import('@/components/image-gallery').then(mod => mod.ImageGallery),
-  { ssr: false, loading: () => <div className="h-60 bg-gray-200 animate-pulse rounded-md mb-4" /> }
-)
-import { AuthorInfo } from "@/components/author-info"
+import { CharacterInfo } from "@/components/character-info"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { Providers } from "@/components/providers"
 const PhotoGallery = dynamic(
   () => import('@/components/photo-gallery').then(mod => mod.PhotoGallery),
-  { ssr: false, loading: () => <div className="h-60 bg-gray-200 animate-pulse rounded-md mb-4" /> }
+  { ssr: false, loading: () => <div className="w-full h-60 bg-slate-100/50 dark:bg-slate-900/50 animate-pulse"></div> }
 )
-import { ScrollIndicator } from "@/components/scroll-indicator"
 import { ScrollHandler } from "@/components/scroll-handler"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { BackToTopButton } from "@/components/back-to-top-button"
 import { MapEntryButton } from "@/components/map-entry-button"
+import { DynamicBackground } from "@/components/dynamic-background"
+import { AuthorInfo } from "@/components/author-info"
+import { CharacterShowcase } from "@/components/character-showcase"
 
 export default function Home() {
   return <Providers>
     <ScrollHandler />
-    <main className="min-h-screen bg-white dark:bg-slate-900 py-12 px-6 md:px-8 lg:px-16">
-      <div className="mx-auto max-w-6xl flex flex-col space-y-12">
-        <div className="flex justify-end gap-3">
-          <ThemeToggle />
-          <LanguageSwitcher />
+    <DynamicBackground />
+
+    <main className="min-h-screen">
+      {/* Fixed Top Bar */}
+      <nav className="fixed top-0 right-0 left-0 z-50 px-4 py-3 md:px-8 md:py-6 flex justify-end items-center gap-4 md:gap-6">
+        <ThemeToggle />
+        <LanguageSwitcher />
+      </nav>
+
+      {/* Main Content */}
+      <div className="pt-20 pb-12 md:pt-24 md:pb-16">
+        {/* Character Showcase - Reference shiro.page style */}
+        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-8 md:mb-16">
+          <CharacterShowcase />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-8 items-start">
-          {/* Row 1, Col 1 */}
-          <div className="lg:col-span-1">
-            <Suspense fallback={<div className="h-80 bg-gray-200 animate-pulse rounded-md mb-4" />}>
-              <CharacterCard />
-            </Suspense>
-          </div>
-          {/* Row 1, Col 2–3 */}
-          <div className="lg:col-span-2">
-            <Suspense>
-              <ImageGallery />
-            </Suspense>
-          </div>
-          {/* Row 2, Col 1 */}
-          <div className="lg:col-span-1">
+        {/* Info Section - Two column layout */}
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 mb-8 md:mb-16">
+          <CharacterInfo />
+          <div className="space-y-6 md:space-y-8">
+            <AuthorInfo />
             <MapEntryButton />
           </div>
-          {/* Row 2, Col 2–3 */}
-          <div className="lg:col-span-2">
-            <div className="mb-16">
-              <AuthorInfo />
-            </div>
-          </div>
+        </div>
+
+        {/* Photo Gallery Section */}
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <Suspense fallback={<div className="w-full h-60 bg-slate-100/50 dark:bg-slate-900/50 animate-pulse"></div>}>
+            <PhotoGallery />
+          </Suspense>
         </div>
       </div>
-
-      <section className="mt-16">
-        <Suspense>
-          <PhotoGallery />
-        </Suspense>
-      </section>
 
       <BackToTopButton />
     </main>

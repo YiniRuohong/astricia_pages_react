@@ -1,85 +1,86 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { useTranslation } from "@/lib/i18n/use-translation"
-import { Sparkles, Cake, Ruler, Heart, Smile } from "lucide-react"
 import Image from "next/image"
 
 export function CharacterCard() {
   const { t } = useTranslation()
 
   return (
-    <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
-      <CardHeader className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-center">
-        <CardTitle className="text-2xl font-bold">Astricia</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-6 space-y-4">
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100">
-            {t("character.traits.beastEars")}
-          </Badge>
-          <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
-            {t("character.traits.staff")}
-          </Badge>
-          <Badge variant="secondary" className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100">
-            {t("character.traits.heterochromia")}
-          </Badge>
-          <Badge variant="secondary" className="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100">
-            {t("character.traits.starMagic")}
-          </Badge>
+    <div className="space-y-12">
+      {/* Name */}
+      <div className="space-y-4">
+        <h2 className="text-sm uppercase tracking-widest text-slate-500 dark:text-slate-400">Character</h2>
+        <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          Astricia
+        </h1>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-3 gap-8">
+        <div className="space-y-2">
+          <p className="text-sm text-slate-500 dark:text-slate-400">{t("character.age")}</p>
+          <p className="text-3xl font-semibold text-slate-900 dark:text-slate-100">18</p>
         </div>
-
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-purple-500" />
-            <span className="font-medium">{t("character.age")}:</span> 18
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Cake className="h-5 w-5 text-pink-500" />
-            <span className="font-medium">{t("character.birthday")}:</span> {t("character.birthdayValue")}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Ruler className="h-5 w-5 text-blue-500" />
-            <span className="font-medium">{t("character.height")}:</span> 165cm
-          </div>
-
-          <div className="flex items-start gap-2">
-            <Heart className="h-5 w-5 text-red-500 mt-1" />
-            <div>
-              <span className="font-medium">{t("character.likes")}:</span>
-              <ul className="list-disc list-inside ml-2 mt-1">
-                <li>{t("character.likesItems.ancientStories")}</li>
-                <li>{t("character.likesItems.iceFruitPudding")}</li>
-                <li>{t("character.likesItems.hotSprings")}</li>
-                <li>{t("character.likesItems.fluffyThings")}</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-2">
-            <Smile className="h-5 w-5 text-green-500 mt-1" />
-            <div>
-              <span className="font-medium">{t("character.personality")}:</span>
-              <p className="mt-1">{t("character.personalityDescription")}</p>
-            </div>
-          </div>
+        <div className="space-y-2">
+          <p className="text-sm text-slate-500 dark:text-slate-400">{t("character.height")}</p>
+          <p className="text-3xl font-semibold text-slate-900 dark:text-slate-100">165cm</p>
         </div>
-        <div className="mt-4">
-          <span className="font-medium">{t("character.signature")}:</span>
-          <div className="mt-2 rounded-md overflow-hidden border border-gray-200 dark:border-gray-800">
-            <Image
-              src="https://github.com/YiniRuohong/astricia/blob/main/source/%E7%AD%BE%E5%90%8D.png?raw=true?height=170&width=59.66"
-              alt={t("character.signatureAlt")}
-              width={250}
-              height={100}
-              className="w-full object-contain"
-            />
-          </div>
+        <div className="space-y-2">
+          <p className="text-sm text-slate-500 dark:text-slate-400">{t("character.birthday")}</p>
+          <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">{t("character.birthdayValue")}</p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+
+      {/* Traits */}
+      <div className="space-y-4">
+        <h3 className="text-sm uppercase tracking-widest text-slate-500 dark:text-slate-400">Traits</h3>
+        <div className="flex flex-wrap gap-3">
+          {[
+            t("character.traits.beastEars"),
+            t("character.traits.staff"),
+            t("character.traits.heterochromia"),
+            t("character.traits.starMagic")
+          ].map((trait, index) => (
+            <span
+              key={index}
+              className="inline-block px-4 py-2 text-sm border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded"
+            >
+              {trait}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Likes */}
+      <div className="space-y-4">
+        <h3 className="text-sm uppercase tracking-widest text-slate-500 dark:text-slate-400">Likes</h3>
+        <ul className="space-y-2 text-slate-700 dark:text-slate-300">
+          <li>{t("character.likesItems.ancientStories")}</li>
+          <li>{t("character.likesItems.iceFruitPudding")}</li>
+          <li>{t("character.likesItems.hotSprings")}</li>
+          <li>{t("character.likesItems.fluffyThings")}</li>
+        </ul>
+      </div>
+
+      {/* Personality */}
+      <div className="space-y-4">
+        <h3 className="text-sm uppercase tracking-widest text-slate-500 dark:text-slate-400">Personality</h3>
+        <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+          {t("character.personalityDescription")}
+        </p>
+      </div>
+
+      {/* Signature */}
+      <div className="pt-8 border-t border-slate-200 dark:border-slate-800">
+        <Image
+          src="https://github.com/YiniRuohong/astricia/blob/main/source/%E7%AD%BE%E5%90%8D.png?raw=true?height=170&width=59.66"
+          alt={t("character.signatureAlt")}
+          width={250}
+          height={100}
+          className="h-20 w-auto object-contain opacity-60"
+        />
+      </div>
+    </div>
   )
 }
