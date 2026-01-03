@@ -6,30 +6,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { useTranslation } from "@/lib/i18n/use-translation"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-
-// 图片资源列表
-const GALLERY_IMAGES = [
-  { src: "https://cdn.sa.net/2024/10/24/Djz3NSiOVaWq97X.jpg", alt: "Astricia illustration 1" },
-  { src: "https://cdn.sa.net/2024/10/24/ENyHIVXKmPBQrnh.jpg", alt: "Astricia illustration 2" },
-  { src: "https://cdn.sa.net/2024/10/24/TVI5XFuBNC8Hrxe.jpg", alt: "Astricia illustration 3" },
-  { src: "https://cdn.sa.net/2024/10/24/MU2s7gtuCa4GnSe.png", alt: "Astricia illustration 4" },
-  { src: "https://cdn.sa.net/2024/10/24/c6r8SNRA3EYuawI.jpg", alt: "Astricia illustration 5" },
-  { src: "https://cdn.sa.net/2024/10/24/4pnfDHlMk6NQL9K.jpg", alt: "Astricia illustration 6" },
-  { src: "https://cdn.sa.net/2024/10/24/YaIPQCt4dhDeoqM.jpg", alt: "Astricia illustration 7" },
-  { src: "https://cdn.sa.net/2024/10/24/AxfbFXwgsEnOZoN.png", alt: "Astricia illustration 8" },
-  { src: "https://cdn.sa.net/2024/10/24/j4aMiVwvH8m6b1x.jpg", alt: "Astricia illustration 9" },
-  { src: "https://cdn.sa.net/2024/10/24/x3zuStBk4Zp2NOQ.jpg", alt: "Astricia illustration 10" },
-  { src: "https://cdn.sa.net/2024/10/24/149ieR5tIKOs3aq.png", alt: "Astricia illustration 11" },
-  { src: "https://cdn.sa.net/2024/10/24/6aMVyjUSJOKeYFL.jpg", alt: "Astricia illustration 12" },
-  { src: "https://cdn.sa.net/2024/10/24/lzdbu6XBDgWJ2rL.png", alt: "Astricia illustration 13" },
-  { src: "https://cdn.sa.net/2024/10/24/3j2JzcgslGtfkYb.png", alt: "Astricia illustration 14" },
-  { src: "https://cdn.sa.net/2024/10/24/bm4axGBrVNk1KfA.webp", alt: "Astricia illustration 15" },
-  { src: "https://cdn.sa.net/2025/05/03/2d8bocaODNrZ1IL.webp", alt: "Astricia illustration 16" },
-  { src: "https://cdn.sa.net/2025/05/03/9bGmznyst24JBNE.webp", alt: "Astricia illustration 17" },
-  { src: "https://cdn.sa.net/2025/05/03/V1rT8X7F5qhftSg.webp", alt: "Astricia illustration 18" },
-  { src: "https://cdn.sa.net/2025/05/03/lNKTHeUwXr5gyBu.jpg", alt: "Astricia illustration 19" },
-  { src: "https://cdn.sa.net/2025/11/28/eJagyotKmruUX8n.png", alt: "Astricia illustration 20" },
-]
+import { siteConfig } from "@/config/site.config"
 
 export function PhotoGallery() {
   const translation = useTranslation()
@@ -42,7 +19,7 @@ export function PhotoGallery() {
 
   // 预加载图片获取尺寸
   useEffect(() => {
-    GALLERY_IMAGES.forEach((image) => {
+    siteConfig.gallery.images.forEach((image) => {
       const img = new window.Image()
       img.crossOrigin = "anonymous"
       img.src = image.src
@@ -96,7 +73,7 @@ export function PhotoGallery() {
         </h2>
 
         <div className="columns-1 md:columns-2 lg:columns-3 gap-3 md:gap-4 space-y-3 md:space-y-4">
-          {GALLERY_IMAGES.map((image, index) => (
+          {siteConfig.gallery.images.map((image, index) => (
             <div key={index} className="break-inside-avoid">
               <Card
                 className="overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 group relative"

@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Providers } from '@/components/providers'
+import { siteConfig } from '@/config/site.config'
 
 export const metadata: Metadata = {
-  title: 'Astricia',
-  description: 'Created with Astricia',
+  title: siteConfig.siteName,
+  description: siteConfig.siteDescription,
+  keywords: siteConfig.siteKeywords,
+  authors: [{ name: siteConfig.author.name, url: siteConfig.author.url }],
+  creator: siteConfig.author.name,
   generator: 'astricia.dev',
 }
 
