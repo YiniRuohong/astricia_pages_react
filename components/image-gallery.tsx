@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTranslation } from "@/lib/i18n/use-translation"
 import Image from "next/image"
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
@@ -9,16 +9,58 @@ export function ImageGallery() {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState("casual")
   const [casualVariant, setCasualVariant] = useState<"with" | "without">("with")
+  const [currentImage, setCurrentImage] = useState("")
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   const CASUAL_WITHOUT_CLOAK = "https://cdn.sa.net/2025/05/18/EGu6CRHASBrwoLl.png"
   const CASUAL_WITH_CLOAK = "https://cdn.sa.net/2025/05/18/y4EfhVPa6sqxtm9.png"
   const WINTER_IMAGE = "https://cdn.sa.net/2026/01/03/bvU4FnoOJCfPieZ.png"
 
-  const getCurrentImage = () => {
+  const getTargetImage = () => {
     if (activeTab === "casual") {
       return casualVariant === "with" ? CASUAL_WITH_CLOAK : CASUAL_WITHOUT_CLOAK
     }
     return WINTER_IMAGE
+  }
+
+  // 初始化图片
+  useEffect(() => {
+    setCurrentImage(getTargetImage())
+  }, [])
+
+  // 图片切换动画
+  useEffect(() => {
+    const targetImage = getTargetImage()
+
+    if (targetImage !== currentImage) {
+      setIsTransitioning(true)
+
+      // 淡出 -> 切换图片 -> 淡入
+      const timeout1 = setTimeout(() => {
+        setCurrentImage(targetImage)
+      }, 200) // 等待淡出完成
+
+      const timeout2 = setTimeout(() => {
+        setIsTransitioning(false)
+      }, 400) // 淡入完成
+
+      return () => {
+        clearTimeout(timeout1)
+        clearTimeout(timeout2)
+      }
+    }
+  }, [activeTab, casualVariant])
+
+  const handleTabChange = (tab: string) => {
+    if (tab !== activeTab) {
+      setActiveTab(tab)
+    }
+  }
+
+  const handleVariantChange = (variant: "with" | "without") => {
+    if (variant !== casualVariant) {
+      setCasualVariant(variant)
+    }
   }
 
   return (
@@ -27,10 +69,12 @@ export function ImageGallery() {
         <DialogTrigger asChild>
           <div className="relative w-full h-full cursor-zoom-in">
             <Image
-              src={getCurrentImage()}
+              src={currentImage}
               alt={activeTab === "casual" ? t("gallery.casualAlt") : t("gallery.winterAlt")}
               fill
-              className="object-contain"
+              className={`object-contain transition-opacity duration-200 ${
+                isTransitioning ? "opacity-0" : "opacity-100"
+              }`}
               sizes="(max-width: 500px) 100vw, 500px"
               priority
             />
@@ -38,7 +82,7 @@ export function ImageGallery() {
         </DialogTrigger>
         <DialogContent className="bg-white p-4 flex justify-center items-center max-w-4xl">
           <Image
-            src={getCurrentImage()}
+            src={currentImage}
             alt={activeTab === "casual" ? t("gallery.casualAlt") : t("gallery.winterAlt")}
             width={800}
             height={1200}
@@ -52,8 +96,8 @@ export function ImageGallery() {
         {/* Tab Selector */}
         <div className="flex gap-2">
           <button
-            onClick={() => setActiveTab("casual")}
-            className={`flex-1 px-4 py-2 text-sm rounded transition-colors ${
+            onClick={() => handleTabChange("casual")}
+            className={`flex-1 px-4 py-2 text-sm rounded transition-all duration-200 ${
               activeTab === "casual"
                 ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900"
                 : "bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
@@ -62,8 +106,8 @@ export function ImageGallery() {
             {t("gallery.casual")}
           </button>
           <button
-            onClick={() => setActiveTab("winter")}
-            className={`flex-1 px-4 py-2 text-sm rounded transition-colors ${
+            onClick={() => handleTabChange("winter")}
+            className={`flex-1 px-4 py-2 text-sm rounded transition-all duration-200 ${
               activeTab === "winter"
                 ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900"
                 : "bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
@@ -77,8 +121,8 @@ export function ImageGallery() {
         {activeTab === "casual" && (
           <div className="flex gap-2">
             <button
-              onClick={() => setCasualVariant("with")}
-              className={`flex-1 px-4 py-2 text-xs rounded transition-colors ${
+              onClick={() => handleVariantChange("with")}
+              className={`flex-1 px-4 py-2 text-xs rounded transition-all duration-200 ${
                 casualVariant === "with"
                   ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900"
                   : "bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
@@ -87,8 +131,8 @@ export function ImageGallery() {
               {t("gallery.withCloak")}
             </button>
             <button
-              onClick={() => setCasualVariant("without")}
-              className={`flex-1 px-4 py-2 text-xs rounded transition-colors ${
+              onClick={() => handleVariantChange("without")}
+              className={`flex-1 px-4 py-2 text-xs rounded transition-all duration-200 ${
                 casualVariant === "without"
                   ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900"
                   : "bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
