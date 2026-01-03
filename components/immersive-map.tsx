@@ -66,7 +66,6 @@ export function ImmersiveMap() {
   }
 
   const onMouseUp = () => endDragging()
-
   const onTouchEnd = () => endDragging()
 
   const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
@@ -100,7 +99,6 @@ export function ImmersiveMap() {
     }
   }, [isDragging])
 
-  // After zoom, ensure translate stays within bounds
   useEffect(() => {
     if (!containerRef.current || typeof mapSrc === 'string') return
     const rect = containerRef.current.getBoundingClientRect()
@@ -120,29 +118,15 @@ export function ImmersiveMap() {
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
       onWheel={onWheel}
-      style={{
-        width: '100%',
-        height: '100%',
-        overflow: 'hidden',
-        border: '1px solid #444',
-        cursor: isDragging ? 'grabbing' : 'grab',
-        position: 'relative',
-        userSelect: 'none',
-        touchAction: 'none',
-      }}
+      className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing touch-none select-none"
     >
       <img
         src={typeof mapSrc === 'string' ? mapSrc : mapSrc.src}
-        alt="Immersive Game Map"
+        alt="World Map"
+        className="absolute top-0 left-0 select-none pointer-events-none max-w-none"
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
           transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
           transformOrigin: 'top left',
-          userSelect: 'none',
-          pointerEvents: 'none',
-          maxWidth: 'none'
         }}
         draggable={false}
       />
