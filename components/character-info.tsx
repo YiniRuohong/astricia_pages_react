@@ -19,27 +19,32 @@ export function CharacterInfo() {
             <dt className="text-sm text-slate-600 dark:text-slate-400">{t("character.birthday")}</dt>
             <dd className="text-base font-medium text-slate-900 dark:text-slate-100">{t("character.birthdayValue")}</dd>
           </div>
-
-          <div className="flex justify-between items-center">
-            <dt className="text-sm text-slate-600 dark:text-slate-400">{t("character.traits.beastEars")}</dt>
-            <dd className="text-base font-medium text-slate-900 dark:text-slate-100">✓</dd>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <dt className="text-sm text-slate-600 dark:text-slate-400">{t("character.traits.staff")}</dt>
-            <dd className="text-base font-medium text-slate-900 dark:text-slate-100">✓</dd>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <dt className="text-sm text-slate-600 dark:text-slate-400">{t("character.traits.heterochromia")}</dt>
-            <dd className="text-base font-medium text-slate-900 dark:text-slate-100">✓</dd>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <dt className="text-sm text-slate-600 dark:text-slate-400">{t("character.traits.starMagic")}</dt>
-            <dd className="text-base font-medium text-slate-900 dark:text-slate-100">✓</dd>
-          </div>
         </dl>
+      </div>
+
+      {/* Traits */}
+      <div className="space-y-4">
+        <h2 className="text-sm uppercase tracking-widest text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 pb-2">
+          Traits
+        </h2>
+        <ul className="space-y-2">
+          <li className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></span>
+            {t("character.traits.beastEars")}
+          </li>
+          <li className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></span>
+            {t("character.traits.staff")}
+          </li>
+          <li className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></span>
+            {t("character.traits.heterochromia")}
+          </li>
+          <li className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></span>
+            {t("character.traits.starMagic")}
+          </li>
+        </ul>
       </div>
 
       {/* Likes */}
