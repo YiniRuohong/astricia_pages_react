@@ -89,13 +89,13 @@ export function PhotoGallery() {
   }, [])
 
   return (
-    <section id="gallery" className="py-12 px-4 min-h-screen snap-start" ref={galleryRef}>
+    <section id="gallery" className="py-8 md:py-12 px-4 min-h-screen snap-start" ref={galleryRef}>
       <div className="container mx-auto max-w-6xl">
-        <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-purple-500 to-indigo-500 bg-clip-text text-transparent">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8 bg-gradient-to-r from-purple-500 to-indigo-500 bg-clip-text text-transparent">
           {t("gallery.title")}
         </h2>
 
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-3 md:gap-4 space-y-3 md:space-y-4">
           {GALLERY_IMAGES.map((image, index) => (
             <div key={index} className="break-inside-avoid">
               <Card

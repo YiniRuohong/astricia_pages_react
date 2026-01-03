@@ -5,13 +5,11 @@ import Link from 'next/link'
 import { ImmersiveMap } from '@/components/immersive-map'
 import { LanguageSwitcher } from '@/components/language-switcher'
 import { ThemeToggle } from '@/components/theme-toggle'
-import { useTranslation } from '@/lib/i18n/use-translation'
-import { ArrowLeft, Maximize2, Minimize2 } from 'lucide-react'
-import { BackToTopButton } from '@/components/back-to-top-button'
+import { ArrowLeft, Maximize2, Minimize2, X } from 'lucide-react'
 
 export default function MapPage() {
-  const { t } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
+  const mapWrapperRef = useRef<HTMLDivElement>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
   useEffect(() => {
@@ -21,65 +19,66 @@ export default function MapPage() {
   }, [])
 
   const toggleFullscreen = () => {
-    if (!containerRef.current) return
+    if (!mapWrapperRef.current) return
     if (!isFullscreen) {
-      containerRef.current.requestFullscreen().catch(() => {})
+      mapWrapperRef.current.requestFullscreen().catch(() => {})
     } else {
       document.exitFullscreen().catch(() => {})
     }
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      {/* Header */}
-      <nav className="fixed top-0 right-0 left-0 z-50 px-8 py-6 flex justify-between items-center">
+    <div className="min-h-screen bg-slate-950">
+      {/* Fixed Header */}
+      <nav className="fixed top-0 right-0 left-0 z-50 px-4 py-3 md:px-6 md:py-4 flex justify-between items-center bg-slate-950/80 backdrop-blur-sm border-b border-slate-800">
         <Link
           href="/"
-          className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+          className="flex items-center gap-2 text-slate-400 hover:text-slate-100 transition-colors group"
         >
-          <ArrowLeft className="h-5 w-5" />
-          <span className="text-sm font-medium">Home</span>
+          <ArrowLeft className="h-4 w-4 md:h-5 md:w-5 group-hover:-translate-x-1 transition-transform" />
+          <span className="text-xs md:text-sm font-medium">Home</span>
         </Link>
-        <div className="flex gap-4">
+        <div className="flex gap-2 md:gap-4">
           <ThemeToggle />
           <LanguageSwitcher />
         </div>
       </nav>
 
-      {/* Map Container */}
-      <div className="pt-24 pb-16 px-8 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          {/* Title */}
-          <div className="mb-8 text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-2">
-              World Map
-            </h1>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              Drag to pan · Scroll to zoom
-            </p>
+      {/* Map Container - Game style fullscreen */}
+      <div className="pt-12 md:pt-16 h-screen">
+        <div className="relative w-full h-[calc(100vh-3rem)] md:h-[calc(100vh-4rem)]">
+          {/* Map */}
+          <div
+            ref={mapWrapperRef}
+            className="w-full h-full relative"
+          >
+            <ImmersiveMap />
           </div>
 
-          {/* Map Controls */}
-          <div className="mb-6 flex justify-end gap-2">
+          {/* Floating Control Panel */}
+          <div className="absolute top-4 right-4 flex flex-col gap-2">
             <button
               onClick={toggleFullscreen}
-              className="px-4 py-2 text-sm border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors rounded flex items-center gap-2"
+              className="p-2 bg-slate-900/90 backdrop-blur-sm border border-slate-700 text-slate-300 hover:text-slate-100 hover:bg-slate-800 transition-all rounded-md shadow-xl"
+              title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
             >
               {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-              {isFullscreen ? 'Exit' : 'Fullscreen'}
             </button>
           </div>
 
-          {/* Map */}
-          <div className="relative bg-white dark:bg-slate-900 rounded-lg shadow-xl overflow-hidden border border-slate-200 dark:border-slate-800">
-            <div className="w-full h-[70vh]">
-              <ImmersiveMap />
+          {/* Title Overlay */}
+          <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
+            <div className="bg-slate-900/90 backdrop-blur-sm border border-slate-700 rounded-lg p-3 shadow-xl max-w-md">
+              <h1 className="text-sm md:text-base font-bold text-slate-100 mb-1">
+                World Map
+              </h1>
+              <p className="text-xs text-slate-400">
+                Drag to explore · Scroll to zoom
+              </p>
             </div>
           </div>
         </div>
       </div>
-
-      <BackToTopButton />
     </div>
   )
 }
