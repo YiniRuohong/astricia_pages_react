@@ -12,30 +12,30 @@ export function LanguageSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="outline"
+          variant="ghost"
           size="sm"
-          className="gap-2 h-10 px-4 rounded-full border-2 border-indigo-200 dark:border-indigo-800 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-all duration-300 shadow-md hover:shadow-lg font-semibold"
+          className="gap-2 h-10 px-4 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium"
         >
-          <Languages className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-          <span className="text-sm">{language === "zh" ? "中文" : language === "ja" ? "日本語" : "English"}</span>
+          <Languages className="h-4 w-4" />
+          <span className="text-sm">{language === "zh" ? "中文" : language === "ja" ? "日本語" : "EN"}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="rounded-xl border-2 shadow-xl">
+      <DropdownMenuContent align="end" className="border-slate-200 dark:border-slate-800">
         <DropdownMenuItem
           onClick={() => setLanguage("en")}
-          className="cursor-pointer rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors"
+          className="cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
         >
-          English
+          EN
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setLanguage("zh")}
-          className="cursor-pointer rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors"
+          className="cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
         >
           中文
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setLanguage("ja")}
-          className="cursor-pointer rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors"
+          className="cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
         >
           日本語
         </DropdownMenuItem>

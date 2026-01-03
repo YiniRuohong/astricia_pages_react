@@ -2,19 +2,14 @@
 
 import Link from "next/link"
 import { useTranslation } from "@/lib/i18n/use-translation"
-import { Map } from "lucide-react"
 
 export function MapEntryButton() {
   const { t } = useTranslation()
   return (
-    <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 border border-indigo-100 dark:border-indigo-900/50">
+    <div className="border border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 shadow-lg hover:shadow-xl rounded-lg p-4">
       <Link href="/map" className="block">
-        <button className="w-full group relative py-4 px-6 text-lg font-semibold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:from-indigo-700 hover:via-purple-700 hover:to-indigo-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-          <div className="flex items-center justify-center gap-3 relative">
-            <Map className="h-5 w-5 transition-transform group-hover:scale-110" />
-            <span>{t("map.enterPage")}</span>
-          </div>
+        <button className="w-full py-3 px-4 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:text-indigo-700 dark:hover:text-indigo-400 transition-colors rounded border border-slate-200 dark:border-slate-700">
+          {t("map.enterPage")}
         </button>
       </Link>
     </div>
