@@ -9,13 +9,22 @@ const MAX_SCALE = 3
 export function ImmersiveMap() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [isPinching, setIsPinching] = useState(false)
   const [origin, setOrigin] = useState([0, 0])
   const [translate, setTranslate] = useState({ x: 0, y: 0 })
   const [scale, setScale] = useState(1)
+  const initialPinchDistanceRef = useRef(0)
+  const initialScaleRef = useRef(1)
 
   const startDragging = (x: number, y: number) => {
     setIsDragging(true)
     setOrigin([x - translate.x, y - translate.y])
+  }
+
+  const getTouchDistance = (touch1: Touch, touch2: Touch) => {
+    const dx = touch1.clientX - touch2.clientX
+    const dy = touch1.clientY - touch2.clientY
+    return Math.hypot(dx, dy)
   }
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -24,9 +33,17 @@ export function ImmersiveMap() {
   }
 
   const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const touch = e.touches[0]
-    if (!touch) return
-    startDragging(touch.clientX, touch.clientY)
+    if (e.touches.length === 2) {
+      // 双指缩放
+      e.preventDefault()
+      setIsPinching(true)
+      initialPinchDistanceRef.current = getTouchDistance(e.touches[0], e.touches[1])
+      initialScaleRef.current = scale
+    } else if (e.touches.length === 1) {
+      // 单指拖拽
+      const touch = e.touches[0]
+      startDragging(touch.clientX, touch.clientY)
+    }
   }
 
   const handleMove = (x: number, y: number) => {
@@ -53,16 +70,25 @@ export function ImmersiveMap() {
   }
 
   const onTouchMove = (e: TouchEvent) => {
-    if (!isDragging) return
-    const touch = e.touches[0]
-    if (!touch) return
-    handleMove(touch.clientX, touch.clientY)
+    if (e.touches.length === 2 && isPinching) {
+      // 双指缩放中
+      e.preventDefault()
+      const currentDistance = getTouchDistance(e.touches[0], e.touches[1])
+      const scaleRatio = currentDistance / initialPinchDistanceRef.current
+      const newScale = initialScaleRef.current * scaleRatio
+
+      setScale(Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale)))
+    } else if (e.touches.length === 1 && isDragging && !isPinching) {
+      // 单指拖拽中
+      e.preventDefault()
+      const touch = e.touches[0]
+      handleMove(touch.clientX, touch.clientY)
+    }
   }
 
   const endDragging = () => {
-    if (isDragging) {
-      setIsDragging(false)
-    }
+    setIsDragging(false)
+    setIsPinching(false)
   }
 
   const onMouseUp = () => endDragging()
@@ -80,10 +106,10 @@ export function ImmersiveMap() {
   }
 
   useEffect(() => {
-    if (isDragging) {
+    if (isDragging || isPinching) {
       window.addEventListener('mousemove', onMouseMove)
       window.addEventListener('mouseup', onMouseUp)
-      window.addEventListener('touchmove', onTouchMove)
+      window.addEventListener('touchmove', onTouchMove, { passive: false })
       window.addEventListener('touchend', onTouchEnd)
     } else {
       window.removeEventListener('mousemove', onMouseMove)
@@ -97,7 +123,7 @@ export function ImmersiveMap() {
       window.removeEventListener('touchmove', onTouchMove)
       window.removeEventListener('touchend', onTouchEnd)
     }
-  }, [isDragging])
+  }, [isDragging, isPinching])
 
   useEffect(() => {
     if (!containerRef.current || typeof mapSrc === 'string') return
