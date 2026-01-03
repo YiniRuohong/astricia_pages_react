@@ -1,5 +1,6 @@
 export const translations = {
   en: {
+    subtitle: "A Journey of Destiny",
     map: {
       enterPage: "Enter Map",
       backHome: "Back to Home",
@@ -54,6 +55,7 @@ export const translations = {
     },
   },
   zh: {
+    subtitle: "一段命运的旅程",
     map: {
       enterPage: "进入地图页面",
       backHome: "返回首页",
@@ -108,6 +110,7 @@ export const translations = {
     },
   },
   ja: {
+    subtitle: "運命の旅路",
     map: {
       enterPage: "地図を開く",
       backHome: "ホームへ戻る",

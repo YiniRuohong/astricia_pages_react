@@ -15,7 +15,7 @@ export function CharacterShowcase() {
           <TypewriterText text="Astricia" speed={150} delay={300} />
         </h1>
         <p className="text-base md:text-lg text-slate-600 dark:text-slate-400">
-          一段命运的旅程
+          {t("subtitle")}
         </p>
       </div>
 
