@@ -4,10 +4,7 @@ import { useState, useEffect, useMemo } from "react"
 import { useTranslation } from "@/lib/i18n/use-translation"
 import Image from "next/image"
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
-
-const CASUAL_WITHOUT_CLOAK = "https://cdn.sa.net/2025/05/18/EGu6CRHASBrwoLl.png"
-const CASUAL_WITH_CLOAK = "https://cdn.sa.net/2025/05/18/y4EfhVPa6sqxtm9.png"
-const WINTER_IMAGE = "https://cdn.sa.net/2026/01/03/bvU4FnoOJCfPieZ.png"
+import { siteConfig } from "@/config/site.config"
 
 export function ImageGallery() {
   const { t } = useTranslation()
@@ -18,9 +15,11 @@ export function ImageGallery() {
   // 使用 useMemo 确保图片地址总是有效的
   const currentImage = useMemo(() => {
     if (activeTab === "casual") {
-      return casualVariant === "with" ? CASUAL_WITH_CLOAK : CASUAL_WITHOUT_CLOAK
+      return casualVariant === "with"
+        ? siteConfig.character.images.casualWithCloak
+        : siteConfig.character.images.casualWithoutCloak
     }
-    return WINTER_IMAGE
+    return siteConfig.character.images.winter
   }, [activeTab, casualVariant])
 
   // 图片切换动画

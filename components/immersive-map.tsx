@@ -2,9 +2,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { StaticImageData } from 'next/image';
 import mapSrc from '../public/map.png';
+import { siteConfig } from '@/config/site.config';
 
-const MIN_SCALE = 0.5
-const MAX_SCALE = 3
+const MIN_SCALE = siteConfig.map.config.minScale
+const MAX_SCALE = siteConfig.map.config.maxScale
 
 export function ImmersiveMap() {
   const containerRef = useRef<HTMLDivElement>(null)

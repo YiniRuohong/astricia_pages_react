@@ -2,6 +2,7 @@
 
 import { useTranslation } from "@/lib/i18n/use-translation"
 import Image from "next/image"
+import { siteConfig } from "@/config/site.config"
 
 export function CharacterInfo() {
   const { t } = useTranslation()
@@ -73,7 +74,7 @@ export function CharacterInfo() {
       {/* Signature */}
       <div className="pt-3 md:pt-4 border-t border-slate-200 dark:border-slate-800">
         <Image
-          src="https://github.com/YiniRuohong/astricia/blob/main/source/%E7%AD%BE%E5%90%8D.png?raw=true?height=170&width=59.66"
+          src={siteConfig.character.signatureImage}
           alt={t("character.signatureAlt")}
           width={250}
           height={100}

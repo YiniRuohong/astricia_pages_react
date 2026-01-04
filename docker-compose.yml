@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  astricia:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    container_name: astricia-pages
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - NEXT_TELEMETRY_DISABLED=1
+    networks:
+      - astricia-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  astricia-network:
+    driver: bridge

@@ -6,6 +6,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // 优化 Docker 部署
+  output: 'standalone',
 }
 
 export default nextConfig
