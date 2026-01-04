@@ -43,10 +43,13 @@ Astricia 的个人角色展示页面，基于 Next.js 16、React 19 和 Tailwind
 git clone https://github.com/YiniRuohong/astricia_pages_react.git
 cd astricia_pages_react
 
-# 2. 安装依赖
+# 2. 修改配置文件（可选）
+# 编辑 config/site.config.ts 自定义站点内容
+
+# 3. 安装依赖
 pnpm install
 
-# 3. 启动开发服务器
+# 4. 启动开发服务器
 pnpm dev
 ```
 
@@ -169,14 +172,16 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 
 ```
 astricia_pages_react/
-├── app/                    # Next.js App Router
-│   ├── page.tsx           # 首页
-│   ├── map/               # 地图页面
-│   │   └── page.tsx       # 地图组件
-│   ├── layout.tsx         # 根布局
-│   └── globals.css        # 全局样式
-├── components/            # React 组件
-│   ├── ui/                # shadcn/ui 基础组件
+├── config/               # 配置文件 ⭐
+│   └── site.config.ts    # 站点统一配置文件（修改这里自定义内容）
+├── app/                  # Next.js App Router
+│   ├── page.tsx         # 首页
+│   ├── map/             # 地图页面
+│   │   └── page.tsx     # 地图组件
+│   ├── layout.tsx       # 根布局
+│   └── globals.css      # 全局样式
+├── components/          # React 组件
+│   ├── ui/              # shadcn/ui 基础组件
 │   ├── character-showcase.tsx    # 角色展示（打字机+图片）
 │   ├── character-info.tsx        # 角色信息
 │   ├── author-info.tsx           # 创作者信息
@@ -190,89 +195,260 @@ astricia_pages_react/
 │   ├── scroll-handler.tsx        # 滚动处理
 │   ├── back-to-top-button.tsx    # 返回顶部
 │   └── providers.tsx             # 全局 Provider
-├── lib/                   # 工具库
-│   └── i18n/              # 国际化配置
+├── lib/                 # 工具库
+│   └── i18n/            # 国际化配置
 │       ├── translations.ts     # 翻译文件
 │       ├── language-provider.tsx
 │       └── use-translation.ts
-├── public/                # 静态资源
-│   └── map.png           # 地图图片
-├── Dockerfile            # Docker 配置
-├── docker-compose.yml    # Docker Compose 配置
-├── next.config.mjs       # Next.js 配置
-├── tailwind.config.ts    # Tailwind CSS 配置
-├── tsconfig.json         # TypeScript 配置
-└── package.json          # 项目依赖
+├── public/              # 静态资源
+│   └── map.png         # 地图图片
+├── Dockerfile          # Docker 配置
+├── docker-compose.yml  # Docker Compose 配置
+├── .env.example        # 环境变量示例
+├── next.config.mjs     # Next.js 配置
+├── tailwind.config.ts  # Tailwind CSS 配置
+├── tsconfig.json       # TypeScript 配置
+└── package.json        # 项目依赖
 ```
 
 ## 🎨 自定义指南
 
-### 修改角色信息
+> **重要提示**：本项目使用统一的配置文件系统，**所有自定义内容都在 `config/site.config.ts` 文件中**，无需修改代码。
 
-编辑 `lib/i18n/translations.ts` 文件：
+### 快速自定义
+
+编辑 `config/site.config.ts` 文件即可自定义整个站点。配置文件包含以下部分：
 
 ```typescript
-zh: {
-  subtitle: "一段命运的旅程",  // 副标题
+// config/site.config.ts
+
+export const siteConfig = {
+  // ============================================
+  // 应用基础配置
+  // ============================================
+  siteName: 'Astricia',              // 站点名称
+  siteDescription: '...',            // 站点描述
+  siteKeywords: '...',               // SEO 关键词
+
+  // ============================================
+  // 角色信息配置 ⭐
+  // ============================================
   character: {
-    birthdayValue: "12月8日",  // 修改生日
-    personalityDescription: "活泼、开朗、乐于助人。",  // 修改性格
+    name: 'Astricia',                // 角色名称
+    birthday: '12月8日',             // 生日（中文）
+    birthdayEn: 'December 8',        // 生日（英文）
+    personality: '活泼、开朗、乐于助人。',  // 性格描述
 
-    // 修改特征
+    // 角色特征（多语言）
     traits: {
-      beastEars: "兽耳",
-      staff: "法杖",
-      heterochromia: "异瞳",
-      starMagic: "星辰魔法",
+      beastEars: { zh: '兽耳', en: 'Beast Ears', ja: '獣耳' },
+      staff: { zh: '法杖', en: 'Staff', ja: '杖' },
+      // ... 添加更多特征
     },
 
-    // 修改喜好
-    likesItems: {
-      ancientStories: "收集古老故事",
-      iceFruitPudding: "冰果布丁",
-      hotSprings: "温泉",
-      fluffyThings: "毛茸茸的东西",
+    // 角色喜好（多语言）
+    likes: {
+      ancientStories: {
+        zh: '收集古老故事',
+        en: 'Collecting ancient stories',
+        ja: '古い物語を集めること',
+      },
+      // ... 添加更多喜好
     },
+
+    // 立绘图片 URL
+    images: {
+      casualWithoutCloak: 'https://...',   // 常服（无披风）
+      casualWithCloak: 'https://...',       // 常服（有披风）
+      winter: 'https://...',                // 冬装
+    },
+
+    signatureImage: 'https://...',          // 签名图片
+  },
+
+  // ============================================
+  // 作者信息配置 ⭐
+  // ============================================
+  authorInfo: {
+    displayName: {
+      zh: '创作者',
+      en: 'Creator',
+      ja: 'クリエイター',
+    },
+    avatar: 'https://...',                  // 头像 URL
+    description: {
+      zh: '角色设计师 & 插画师',
+      en: 'Character designer & illustrator',
+      ja: 'キャラクターデザイナー＆イラストレーター',
+    },
+
+    // 社交链接
+    socialLinks: {
+      blog: {
+        url: 'https://blog.atago.moe',
+        label: { zh: '个人博客', en: 'Personal Blog', ja: '個人ブログ' },
+      },
+      twitter: {
+        url: 'https://x.com/Yini_Ruohong',
+        label: 'Twitter',
+      },
+    },
+  },
+
+  // ============================================
+  // 地图配置
+  // ============================================
+  map: {
+    image: 'map.png',                       // 地图图片（相对于 public 目录）
+    config: {
+      minScale: 0.5,                        // 最小缩放比例
+      maxScale: 3,                          // 最大缩放比例
+      defaultScale: 1,                      // 默认缩放比例
+    },
+    text: {
+      title: { zh: 'World Map', en: 'World Map', ja: 'ワールドマップ' },
+      subtitle: { zh: '拖动探索 · 滚轮缩放', en: 'Drag to explore · Scroll to zoom', ja: 'ドラッグして探索 · スクロールでズーム' },
+      // ... 更多文本
+    },
+  },
+
+  // ============================================
+  // 图片画廊配置
+  // ============================================
+  gallery: {
+    title: { zh: '相册展示', en: 'Photo Gallery', ja: 'フォトギャラリー' },
+
+    // 图片列表（添加/删除图片）
+    images: [
+      { src: 'https://...', alt: 'Astricia illustration 1' },
+      { src: 'https://...', alt: 'Astricia illustration 2' },
+      // ... 添加更多图片
+    ],
+  },
+
+  // ============================================
+  // 功能开关配置
+  // ============================================
+  features: {
+    dynamicBackground: true,      // 动态背景效果
+    typewriterEffect: true,       // 打字机效果
+    backToTopButton: true,        // 返回顶部按钮
+    photoGallery: true,           // 图片画廊
+    mapPage: true,                // 地图页面
+  },
+
+  // ============================================
+  // UI、性能、SEO 等其他配置
+  // ============================================
+  // ... 详见配置文件
+}
+```
+
+### 配置示例
+
+#### 修改角色信息
+
+```typescript
+character: {
+  name: '你的角色名',
+  birthday: '1月1日',
+  personality: '描述角色的性格...',
+  traits: {
+    customTrait: { zh: '自定义特征', en: 'Custom Trait', ja: 'カスタム' },
   },
 }
 ```
 
-### 修改立绘图片
-
-在 `components/image-gallery.tsx` 中修改图片 URL：
+#### 更换立绘图片
 
 ```typescript
-const CASUAL_WITHOUT_CLOAK = "你的图片URL.png"
-const CASUAL_WITH_CLOAK = "你的图片URL.png"
-const WINTER_IMAGE = "你的图片URL.png"
+character: {
+  images: {
+    casualWithoutCloak: 'https://your-cdn.com/image1.png',
+    casualWithCloak: 'https://your-cdn.com/image2.png',
+    winter: 'https://your-cdn.com/image3.png',
+  },
+}
+```
+
+#### 添加画廊图片
+
+```typescript
+gallery: {
+  images: [
+    // ... 现有图片
+    { src: 'https://your-new-image.jpg', alt: 'New illustration' },
+  ],
+}
+```
+
+#### 更换作者信息
+
+```typescript
+authorInfo: {
+  avatar: 'https://your-avatar.jpg',
+  description: { zh: '你的描述', en: 'Your description', ja: 'あなたの説明' },
+  socialLinks: {
+    blog: { url: 'https://your-blog.com', label: { zh: '博客', en: 'Blog', ja: 'ブログ' } },
+  },
+}
+```
+
+#### 更换地图图片
+
+有两种方式：
+
+1. **替换文件**（推荐）：将新的地图图片放到 `public/map.png`
+2. **修改配置**：在 `config/site.config.ts` 中修改路径：
+
+```typescript
+map: {
+  image: 'your-custom-map.png',  // 文件放在 public 目录下
+}
+```
+
+#### 开启/关闭功能
+
+```typescript
+features: {
+  dynamicBackground: false,  // 关闭动态背景（提升低端设备性能）
+  photoGallery: true,        // 保持图片画廊开启
+}
 ```
 
 ### 添加新语言
 
-1. 在 `lib/i18n/translations.ts` 添加新的语言对象：
+1. 在 `config/site.config.ts` 中添加语言配置：
 
 ```typescript
-export const translations = {
-  // ... 现有语言
-  fr: {  // 法语示例
-    subtitle: "Un voyage de destin",
-    character: { /* ... */ },
-  },
+languages: {
+  en: 'English',
+  zh: '中文',
+  ja: '日本語',
+  fr: 'Français',  // 添加法语
 }
 ```
 
-2. 在 `components/language-switcher.tsx` 添加语言选项：
+2. 在各个配置项中添加对应语言的翻译（详见配置文件注释）
 
-```typescript
-const langMap: Record<string, string> = {
-  // ... 现有语言
-  fr: "Français",
-}
+### 环境变量覆盖（可选）
+
+生产环境可以通过环境变量覆盖部分配置：
+
+```env
+# .env.production
+PORT=3000
+NODE_ENV=production
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ```
 
-### 修改地图图片
+### 配置文件优势
 
-替换 `public/map.png` 文件，或在 `components/immersive-map.tsx` 中修改导入路径。
+- ✅ **集中管理**：所有配置在一个文件中
+- ✅ **中文注释**：每个配置项都有详细说明
+- ✅ **类型安全**：TypeScript 提供完整的类型提示
+- ✅ **无需编程**：修改配置无需了解代码结构
+- ✅ **快速部署**：修改配置后重新构建即可
 
 ## ⚡ 性能优化
 
