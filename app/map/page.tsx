@@ -32,6 +32,10 @@ export default function MapPage() {
     }
   }
 
+  if (!siteConfig.features.mapPage) {
+    return null
+  }
+
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Fixed Header */}
@@ -44,8 +48,8 @@ export default function MapPage() {
           <span className="text-xs md:text-sm font-medium">{t("map.backHome")}</span>
         </Link>
         <div className="flex gap-2 md:gap-4">
-          <ThemeToggle />
-          <LanguageSwitcher />
+          {siteConfig.features.showThemeToggle && <ThemeToggle />}
+          {siteConfig.features.showLanguageSwitcher && <LanguageSwitcher />}
         </div>
       </nav>
 

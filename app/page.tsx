@@ -8,7 +8,7 @@ import { Providers } from "@/components/providers"
 import { ScrollHandler } from "@/components/scroll-handler"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AuthorInfo } from "@/components/author-info"
-import { MapEntryButton } from "@/components/map-entry-button"
+import { siteConfig } from "@/config/site.config"
 
 // Dynamically import heavy components for better performance
 const PhotoGallery = dynamic(
@@ -26,16 +26,21 @@ const BackToTopButton = dynamic(
   { ssr: false }
 )
 
+const MapEntryButton = dynamic(
+  () => import('@/components/map-entry-button').then(mod => mod.MapEntryButton),
+  { ssr: false }
+)
+
 export default function Home() {
   return <Providers>
     <ScrollHandler />
-    <DynamicBackground />
+    {siteConfig.features.dynamicBackground && <DynamicBackground />}
 
     <main className="min-h-screen">
       {/* Fixed Top Bar */}
       <nav className="fixed top-0 right-0 left-0 z-50 px-4 py-3 md:px-8 md:py-6 flex justify-end items-center gap-4 md:gap-6">
-        <ThemeToggle />
-        <LanguageSwitcher />
+        {siteConfig.features.showThemeToggle && <ThemeToggle />}
+        {siteConfig.features.showLanguageSwitcher && <LanguageSwitcher />}
       </nav>
 
       {/* Main Content */}
@@ -50,19 +55,21 @@ export default function Home() {
           <CharacterInfo />
           <div className="space-y-6 md:space-y-8">
             <AuthorInfo />
-            <MapEntryButton />
+            {siteConfig.features.mapPage && <MapEntryButton />}
           </div>
         </div>
 
         {/* Photo Gallery Section */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <Suspense fallback={<div className="w-full h-60 bg-slate-100/50 dark:bg-slate-900/50 animate-pulse"></div>}>
-            <PhotoGallery />
-          </Suspense>
-        </div>
+        {siteConfig.features.photoGallery && (
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <Suspense fallback={<div className="w-full h-60 bg-slate-100/50 dark:bg-slate-900/50 animate-pulse"></div>}>
+              <PhotoGallery />
+            </Suspense>
+          </div>
+        )}
       </div>
 
-      <BackToTopButton />
+      {siteConfig.features.backToTopButton && <BackToTopButton />}
     </main>
   </Providers>
 }

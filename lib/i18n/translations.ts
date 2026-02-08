@@ -34,6 +34,7 @@ export const translations = {
     },
     gallery: {
       title: siteConfig.gallery.title.en,
+      previewTitle: "Image preview",
       casual: "Casual Outfit",
       winter: "Winter Outfit",
       withCloak: "With Cloak",
@@ -89,6 +90,7 @@ export const translations = {
     },
     gallery: {
       title: siteConfig.gallery.title.zh,
+      previewTitle: "图片预览",
       casual: "常服",
       winter: "冬装",
       withCloak: "有披风",
@@ -144,6 +146,7 @@ export const translations = {
     },
     gallery: {
       title: siteConfig.gallery.title.ja,
+      previewTitle: "画像プレビュー",
       casual: "カジュアル服",
       winter: "冬服",
       withCloak: "マントあり",

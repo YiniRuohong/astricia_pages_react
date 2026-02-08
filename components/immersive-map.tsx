@@ -35,13 +35,13 @@ export function ImmersiveMap() {
 
   const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (e.touches.length === 2) {
-      // 双指缩放
+      // 双指缩放：记录初始双指距离与缩放基准
       e.preventDefault()
       setIsPinching(true)
       initialPinchDistanceRef.current = getTouchDistance(e.touches[0], e.touches[1])
       initialScaleRef.current = scale
     } else if (e.touches.length === 1) {
-      // 单指拖拽
+      // 单指拖拽：记录拖拽起点
       const touch = e.touches[0]
       startDragging(touch.clientX, touch.clientY)
     }
@@ -54,6 +54,7 @@ export function ImmersiveMap() {
     const imgW = typeof mapSrc === 'object' ? (mapSrc as StaticImageData).width : 0
     const imgH = typeof mapSrc === 'object' ? (mapSrc as StaticImageData).height : 0
     if (container) {
+      // 限制拖拽边界，避免地图被拖出视口范围
       const minX = container.width - imgW * scale
       const minY = container.height - imgH * scale
       const x = Math.max(minX, Math.min(0, rawX))
@@ -72,7 +73,7 @@ export function ImmersiveMap() {
 
   const onTouchMove = (e: TouchEvent) => {
     if (e.touches.length === 2 && isPinching) {
-      // 双指缩放中
+      // 双指缩放：按距离比例计算新的缩放值并限制上下限
       e.preventDefault()
       const currentDistance = getTouchDistance(e.touches[0], e.touches[1])
       const scaleRatio = currentDistance / initialPinchDistanceRef.current
@@ -80,7 +81,7 @@ export function ImmersiveMap() {
 
       setScale(Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale)))
     } else if (e.touches.length === 1 && isDragging && !isPinching) {
-      // 单指拖拽中
+      // 单指拖拽：持续更新位移
       e.preventDefault()
       const touch = e.touches[0]
       handleMove(touch.clientX, touch.clientY)
@@ -108,6 +109,7 @@ export function ImmersiveMap() {
 
   useEffect(() => {
     if (isDragging || isPinching) {
+      // 拖拽/缩放期间绑定全局监听，避免指针移出容器导致中断
       window.addEventListener('mousemove', onMouseMove)
       window.addEventListener('mouseup', onMouseUp)
       window.addEventListener('touchmove', onTouchMove, { passive: false })
@@ -133,6 +135,7 @@ export function ImmersiveMap() {
     const imgH = (mapSrc as StaticImageData).height * scale
     const minX = rect.width - imgW
     const minY = rect.height - imgH
+    // 缩放时同步校正位移，保证地图仍在视口内
     setTranslate(prev => ({
       x: Math.max(minX, Math.min(0, prev.x)),
       y: Math.max(minY, Math.min(0, prev.y)),

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import NextImage from "next/image"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { useTranslation } from "@/lib/i18n/use-translation"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -17,7 +17,7 @@ export function PhotoGallery() {
   const [imageDimensions, setImageDimensions] = useState<Record<string, { width: number; height: number }>>({})
   const galleryRef = useRef<HTMLDivElement>(null)
 
-  // 预加载图片获取尺寸
+  // 预加载图片尺寸，避免布局抖动
   useEffect(() => {
     siteConfig.gallery.images.forEach((image) => {
       const img = new window.Image()
@@ -53,7 +53,7 @@ export function PhotoGallery() {
     setIsOpen(false)
   }
 
-  // 监听 Esc 键
+  // 监听 Esc 键关闭预览弹窗
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -109,6 +109,7 @@ export function PhotoGallery() {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 border-none bg-transparent">
+          <DialogTitle className="sr-only">{t("gallery.previewTitle")}</DialogTitle>
           <div className="relative w-full h-full flex items-center justify-center">
             {selectedImage && (
               <div className="relative max-w-full max-h-[85vh]">

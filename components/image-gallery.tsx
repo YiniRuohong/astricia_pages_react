@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react"
 import { useTranslation } from "@/lib/i18n/use-translation"
 import Image from "next/image"
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { siteConfig } from "@/config/site.config"
 
 export function ImageGallery() {
@@ -61,6 +61,7 @@ export function ImageGallery() {
           </div>
         </DialogTrigger>
         <DialogContent className="bg-white p-4 flex justify-center items-center max-w-4xl">
+          <DialogTitle className="sr-only">{t("gallery.previewTitle")}</DialogTitle>
           <Image
             src={currentImage}
             alt={activeTab === "casual" ? t("gallery.casualAlt") : t("gallery.winterAlt")}
